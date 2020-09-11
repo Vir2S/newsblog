@@ -106,5 +106,14 @@ def tags_list(request):
     return render(request, 'blogapp/tags.html', context)
 
 
+def tag_detail(request, slug):
+
+    context = {
+        'tags': Tag.objects.get(slug_iexact=slug)
+    }
+
+    return render(request, 'blogapp/tag_detail.html', context)
+
+
 def about(request):
     return render(request, 'blogapp/about.html', {'title': 'About'})
