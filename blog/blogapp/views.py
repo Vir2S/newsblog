@@ -9,7 +9,7 @@ from django.views.generic import (
     DeleteView
 )
 
-from .models import Post
+from .models import Post, Tag
 
 
 def home(request):
@@ -59,7 +59,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'post_image', 'content']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -87,6 +87,23 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
 
         return False
+
+
+# class TagsListView(ListView):
+#
+#     model = Tag
+#     template_name = 'blogapp/tags.html'
+#     context_object_name = 'tags'
+#     paginate_by = 10
+
+
+def tags_list(request):
+
+    context = {
+        'tags': Tag.objects.all()
+    }
+
+    return render(request, 'blogapp/tags.html', context)
 
 
 def about(request):
