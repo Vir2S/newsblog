@@ -15,13 +15,24 @@ from .models import Post, Tag
 def home(request):
 
     context = {
-        'posts': Post.objects.all()
+        'posts': Post.objects.all(),
+        'tags': Tag.objects.all()
     }
 
     return render(request, 'blogapp/home.html', context)
 
 
-class PostListView(ListView):
+class TagMixin(object):
+
+    def get_context_data(self, **kwargs):
+
+        context = super(TagMixin, self).get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
+
+        return context
+
+
+class PostListView(TagMixin, ListView):
 
     model = Post
     template_name = 'blogapp/home.html'  # <app>/<model>_<viewtype>.html
@@ -30,7 +41,7 @@ class PostListView(ListView):
     paginate_by = 10
 
 
-class UserPostListView(ListView):
+class UserPostListView(TagMixin, ListView):
 
     model = Post
     template_name = 'blogapp/user_posts.html'  # <app>/<model>_<viewtype>.html
@@ -42,14 +53,14 @@ class UserPostListView(ListView):
         return Post.objects.filter(author=user).order_by('-date_posted')
 
 
-class PostDetailView(DetailView):
+class PostDetailView(TagMixin, DetailView):
     model = Post
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
 
     model = Post
-    fields = ['title', 'post_image', 'content']
+    fields = ['title', 'post_image', 'content', 'tags']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -59,7 +70,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     model = Post
-    fields = ['title', 'post_image', 'content']
+    fields = ['title', 'post_image', 'content', 'tags']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -89,6 +100,18 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 
+class TagIndexView(TagMixin, ListView):
+
+    model = Post
+    template_name = 'blogapp/tags.html'
+    context_object_name = 'posts'
+    ordering = ['-date_posted']
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__slug=self.kwargs.get('slug'))
+
+
 # class TagsListView(ListView):
 #
 #     model = Tag
@@ -97,22 +120,22 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 #     paginate_by = 10
 
 
-def tags_list(request):
-
-    context = {
-        'tags': Tag.objects.all()
-    }
-
-    return render(request, 'blogapp/tags.html', context)
-
-
-def tag_detail(request, slug):
-
-    context = {
-        'tags': Tag.objects.get(slug_iexact=slug)
-    }
-
-    return render(request, 'blogapp/tag_detail.html', context)
+# def tags_list(request):
+#
+#     context = {
+#         'tags': Tag.objects.all()
+#     }
+#
+#     return render(request, 'blogapp/tags.html', context)
+#
+#
+# def tag_detail(request, slug):
+#
+#     context = {
+#         'tag': Tag.objects.get(slug__iexact=slug)
+#     }
+#
+#     return render(request, 'blogapp/tag_detail.html', context)
 
 
 def about(request):

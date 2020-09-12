@@ -15,9 +15,10 @@
           </div>
         {% endif %}
       </div>
-      <h2 class="article-title">{{ object.title }}</h2>
+      <h1 class="article-title">{{ object.title }}</h1>
       <p class="article-content"><img src="{{ post.post_image.url }}"/></p>
       <p class="article-content">{{ object.content }}</p>
+      <p class="article-content">{{ object.tags.all }}</p>
     </div>
   </article>
 {% endblock content %}

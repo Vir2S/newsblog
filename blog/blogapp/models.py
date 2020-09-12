@@ -5,6 +5,8 @@ from django.urls import reverse
 
 from PIL import Image
 
+from taggit.managers import TaggableManager
+
 
 class Post(models.Model):
 
@@ -15,7 +17,8 @@ class Post(models.Model):
     date_updated = models.DateTimeField('Updated', auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post_image = models.ImageField('Image', default='no_image.jpg', upload_to='post_pics')
-    tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
+    # tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
+    tags = TaggableManager()
 
     def __str__(self):
         return self.title
@@ -36,8 +39,11 @@ class Post(models.Model):
 
 class Tag(models.Model):
 
-    title = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
 
     def __str__(self):
-        return self.title
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('tag-detail', kwargs={'slug': self.slug})
