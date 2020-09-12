@@ -18,7 +18,9 @@
       <h1 class="article-title">{{ object.title }}</h1>
       <p class="article-content"><img src="{{ post.post_image.url }}"/></p>
       <p class="article-content">{{ object.content }}</p>
-      <p class="article-content">{{ object.tags.all }}</p>
+      {% for tag in object.tags.all %}
+        <p class="article-content">{{ tag }}</p>
+      {% endfor %}
     </div>
   </article>
 {% endblock content %}
