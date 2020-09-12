@@ -20,7 +20,7 @@
       <p class="article-content">{{ object.content }}</p>
       <div class="article-metadata"></div>
       <div>
-          Tags:&nbsp;&nbsp;<small class="text-muted">{% for tag in object.tags.all %} <a class="mr-2" href="{% url 'tag-detail' tag.slug %}">{{ tag }}</a> {% endfor %}</small>
+          Tags:&nbsp;&nbsp;<small class="text-muted">{% for tag in object.tags.all %} <a class="mr-2" href="{% url 'tag-posts' tag.slug %}">{{ tag }}</a> {% endfor %}</small>
       </div>
     </div>
   </article>
