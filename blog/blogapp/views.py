@@ -35,7 +35,7 @@ class TagMixin(object):
 class PostListView(TagMixin, ListView):
 
     model = Post
-    template_name = 'blogapp/home.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'blogapp/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 10
@@ -44,7 +44,7 @@ class PostListView(TagMixin, ListView):
 class UserPostListView(TagMixin, ListView):
 
     model = Post
-    template_name = 'blogapp/user_posts.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'blogapp/user_posts.html'
     context_object_name = 'posts'
     paginate_by = 10
 
@@ -110,6 +110,9 @@ class TagIndexView(TagMixin, ListView):
 
     def get_queryset(self):
         return Post.objects.filter(tags__slug=self.kwargs.get('slug'))
+
+    def tag_posts(self, name):
+        return Tag.objects.filter(tags_name=self.get('name'))
 
 
 def about(request):
