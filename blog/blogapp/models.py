@@ -17,7 +17,6 @@ class Post(models.Model):
     date_updated = models.DateTimeField('Updated', auto_now=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post_image = models.ImageField('Image', default='no_image.jpg', upload_to='post_pics')
-    # tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
     tags = TaggableManager()
 
     def __str__(self):
