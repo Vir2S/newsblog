@@ -112,7 +112,7 @@ class TagIndexView(TagMixin, ListView):
         return Post.objects.filter(tags__slug=self.kwargs.get('slug'))
 
     def tag_posts(self, name):
-        return Tag.objects.filter(tags_name=self.get('name'))
+        return Tag.objects.filter(tags__name=self.get('name'))
 
 
 def about(request):
