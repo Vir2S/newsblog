@@ -18,7 +18,10 @@
       <h1 class="article-title">{{ object.title }}</h1>
       <p class="article-content"><img src="{{ post.post_image.url }}"/></p>
       <p class="article-content">{{ object.content }}</p>
-      <p class="article-content">{{ object.tags.all }}</p>
+      <div class="article-metadata"></div>
+      <div>
+          Tags:&nbsp;&nbsp;<small class="text-muted">{% for tag in object.tags.all %} <a class="mr-2" href="{% url 'tag-posts' tag.slug %}">{{ tag }}</a> {% endfor %}</small>
+      </div>
     </div>
   </article>
 {% endblock content %}

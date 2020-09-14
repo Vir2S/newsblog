@@ -1,7 +1,7 @@
 {% extends "blogapp/base.html" %}
 {% block content %}
-    <h1 class="mb-3">Posts with "{{ tag.name }}" tag</h1>
-    {% for post in tag.posts.all %}
+    <h1 class="mb-3">Posts with "{{ tag_name }}" tag</h1>
+    {% for post in posts %}
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
           <div class="media-body">

@@ -28,6 +28,7 @@ class TagMixin(object):
 
         context = super(TagMixin, self).get_context_data(**kwargs)
         context['tags'] = Tag.objects.all()
+        context['tag_name'] = self.kwargs.get('slug')
 
         return context
 
@@ -35,7 +36,7 @@ class TagMixin(object):
 class PostListView(TagMixin, ListView):
 
     model = Post
-    template_name = 'blogapp/home.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'blogapp/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 10
@@ -44,7 +45,7 @@ class PostListView(TagMixin, ListView):
 class UserPostListView(TagMixin, ListView):
 
     model = Post
-    template_name = 'blogapp/user_posts.html'  # <app>/<model>_<viewtype>.html
+    template_name = 'blogapp/user_posts.html'
     context_object_name = 'posts'
     paginate_by = 10
 
@@ -103,39 +104,13 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class TagIndexView(TagMixin, ListView):
 
     model = Post
-    template_name = 'blogapp/tags.html'
+    template_name = 'blogapp/tag_posts.html'
     context_object_name = 'posts'
-    ordering = ['-date_posted']
+    # ordering = ['-date_posted']
     paginate_by = 10
 
     def get_queryset(self):
         return Post.objects.filter(tags__slug=self.kwargs.get('slug'))
-
-
-# class TagsListView(ListView):
-#
-#     model = Tag
-#     template_name = 'blogapp/tags.html'
-#     context_object_name = 'tags'
-#     paginate_by = 10
-
-
-# def tags_list(request):
-#
-#     context = {
-#         'tags': Tag.objects.all()
-#     }
-#
-#     return render(request, 'blogapp/tags.html', context)
-#
-#
-# def tag_detail(request, slug):
-#
-#     context = {
-#         'tag': Tag.objects.get(slug__iexact=slug)
-#     }
-#
-#     return render(request, 'blogapp/tag_detail.html', context)
 
 
 def about(request):
