@@ -1,4 +1,4 @@
-{% extends 'blogapp/base.html' %}
+{% extends "blogapp/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="content-section">
@@ -10,6 +10,9 @@
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Login</button>
+                <small class="text-muted ml-2">
+                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                </small>
             </div>
         </form>
         <div class="border-top pt-3">
