@@ -28,6 +28,7 @@ class TagMixin(object):
 
         context = super(TagMixin, self).get_context_data(**kwargs)
         context['tags'] = Tag.objects.all()
+        context['tag_name'] = self.kwargs.get('slug')
 
         return context
 
@@ -105,14 +106,11 @@ class TagIndexView(TagMixin, ListView):
     model = Post
     template_name = 'blogapp/tag_posts.html'
     context_object_name = 'posts'
-    ordering = ['-date_posted']
+    # ordering = ['-date_posted']
     paginate_by = 10
 
     def get_queryset(self):
         return Post.objects.filter(tags__slug=self.kwargs.get('slug'))
-
-    def tag_posts(self, name):
-        return Tag.objects.filter(tags__name=self.get('name'))
 
 
 def about(request):
